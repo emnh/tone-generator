@@ -7,7 +7,9 @@ import './style.css';
 const appDiv = document.getElementById('app');
 appDiv.innerHTML = `<h1>JS Starter</h1>`;
 
-var synth = new Tone.FMSynth().toMaster()
+var fmsynth = new Tone.PolySynth();
+fmsynth.volume.value = -10.0;
+var synth = fmsynth.toDestination();
 
 //schedule a series of notes, one per second
 /*
@@ -17,8 +19,18 @@ synth.triggerAttackRelease('G4', 0.5, 2)
 synth.triggerAttackRelease('B4', 0.5, 3)
 */
 
+Tone.start();
+
+const interval = 1 * 1000;
+const length = 4;
+
 function handler() {
-  synth.triggerAttackRelease('C4', 0.5, 0)
+  appDiv.innerHTHML += '<p>New tone</p>';
+  const time = Tone.context.currentTime.toFixed(3);
+  const freq = 60 + Math.random() * 60;
+  synth.triggerAttackRelease(freq, length, time + 0.01);
+  setTimeout(handler, interval);
 }
 
-setTimeout(handler, 1000);
+handler();
+//setTimeout(handler, interval);
